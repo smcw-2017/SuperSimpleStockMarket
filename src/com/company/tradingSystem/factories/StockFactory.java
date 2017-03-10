@@ -17,6 +17,7 @@ public class StockFactory
      * @param p_lastDividend Last dividend, in pennies.
      * @param p_parValue Par value, in pennies.
      * @return Stock. Common stock with these parameters
+     * @throws SSSMException
      */
     public static Stock getStock(final String p_symbol,
                                  final long p_lastDividend,
@@ -33,7 +34,8 @@ public class StockFactory
      * @param p_lastDividend Last dividend, in pennies.
      * @param p_parValue Par value, in pennies.
      * @param p_fixedDividend Fixed dividend amount as percentage.
-     * @return Stock. Preferred stock with these parameters
+     * @return Stock. Preferred stock with these parameters   
+     * @throws SSSMException
      */
     public static Stock getStock(final String p_symbol,
                                  final long p_lastDividend,

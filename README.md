@@ -44,6 +44,9 @@ To get the all share index.
     getAllShareIndex()
     
 
+Running from .bat file.
+If the classes are compliled to a sub folder called 'classes', the run.bat can be used directly to run the Main class that creates the SuperSimpleStockMarket and runs a few tests on it.  This outputs the results to the console.  Note that as this system does not have any I/O, it just ends after the tests, there is no mechanism to add additional requests from the cmd prompt.
+
 
 From the problem description I decided to make a system that has a concept of a stock object that would allow trades to be recorded in it and reporting done from the stock object.  As the recording of trades was described as an action for a given stock, each stock had its own separate record of its trades.  If stored in a database table the trades would be a single table and not separate table for each stock.  But as it is held in memory and trade data being accessed only in the context of its given stock, this keeps the data where it is needed and no need to filter a combined single trade data set for just those of the given stock.
 

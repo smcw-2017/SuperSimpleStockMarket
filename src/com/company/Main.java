@@ -42,6 +42,7 @@ public class Main
 
 
         // test the reporting
+        System.out.println("Super Simple Stock Market demo. \n");
 
         Stock[] stocks = processor.getStockList();
 

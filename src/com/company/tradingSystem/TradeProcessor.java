@@ -7,8 +7,8 @@ import com.company.tradingSystem.trade.TradeType;
 import java.util.*;
 
 /**
- * This is to handle the flow of trades
- * Created by Stuart on 07/03/2017.
+ * This is the main class for controlling access to the system.  The public API in this contains all a user of this 
+ * system needs to do the trade adding and querying.
  */
 public class TradeProcessor
 {
@@ -28,6 +28,10 @@ public class TradeProcessor
         m_stocks.put(p_stock.getName(), p_stock);
     }
 
+    /**
+     * Return array of all the stocks in the system.
+     * @return
+     */
     public Stock[] getStockList()
     {
         return m_stocks.values().toArray(new Stock[m_stocks.size()]);
@@ -55,6 +59,7 @@ public class TradeProcessor
      * @param p_timeStamp
      * @param p_quantity
      * @param p_price
+     * @throws SSSMException
      */
     public void addBuyTrade(final String p_stockSymbol, final Date p_timeStamp,
                             final long p_quantity, final long p_price) throws SSSMException
@@ -69,7 +74,7 @@ public class TradeProcessor
      * @param p_stockSymbol
      * @param p_timeStamp
      * @param p_quantity
-     * @param p_price
+     * @throws SSSMException
      */
     public void addSellTrade(final String p_stockSymbol, final Date p_timeStamp,
                             final long p_quantity, final long p_price) throws SSSMException
@@ -91,12 +96,26 @@ public class TradeProcessor
 
     // Queries on stocks
 
+    /**
+     * Calculate dividend yeild on stock
+     * @param p_stockSymbol
+     * @param p_price
+     * @return Gets calculated Dividend yield/
+     * @throws SSSMException
+     */
     public double calculateDividendYield(final String p_stockSymbol, final long p_price) throws SSSMException
     {
         Stock stock = getStock(p_stockSymbol);
         return stock.getDividendYield(p_price);
     }
 
+    /**
+     * Calculate P/E ratio on stock.
+     * @param p_stockSymbol
+     * @param p_price
+     * @return Gets calculated P/E Ratio
+     * @throws SSSMException
+     */
     public double calculatePERatio(final String p_stockSymbol, final long p_price) throws SSSMException
     {
         Stock stock = getStock(p_stockSymbol);
@@ -107,7 +126,8 @@ public class TradeProcessor
     /**
      * Get trades for last 5 minutes from current time.
      * @param p_stockSymbol
-     * @return
+     * @return Gets Volume Weighted Stock Price
+     * @throws SSSMException
      */
     public double getVolumeWeightedStockPrice(final String p_stockSymbol) throws SSSMException
     {
