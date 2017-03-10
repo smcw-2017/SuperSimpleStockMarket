@@ -21,7 +21,7 @@ public class Main
      * @param args
      */
     public static void main(String[] args)
-    {
+    {   
         // Create simple stock market system.
         TradeProcessor processor = new TradeProcessor();
 
@@ -49,28 +49,58 @@ public class Main
         Date date = StartupData.getInstance().getTestCurrentTime();
         double[] vwsPrices = new double[stockCount];
 
+        System.out.println("Testing for queries on the trades, making calls against the stock objects directly.");
+        System.out.println();
         for(int i = 0; i < stockCount; i++)
         {
             final Stock stock = stocks[i];
             long examplePrice = stock.getParValue() * 2;
             System.out.println("For stock " + stock.getName() + ":");
-            System.out.println("Dividend yield :" + stock.getDividendYield(examplePrice));
-            System.out.println("P/E ratio :" + stock.getPERatio(examplePrice));
+            System.out.printf("Dividend yield :%.3G \n", stock.getDividendYield(examplePrice));
+            System.out.printf("P/E ratio :%.3G \n", stock.getPERatio(examplePrice));
 
             double vwsPrice = stock.getVolumeWeightedStockPrice5Min(date);
-            System.out.println("Volume Weighted Stock Price :" + vwsPrice);
+            System.out.printf("Volume Weighted Stock Price :%.2f \n", vwsPrice);
 
             // Store values for use in all share index
             vwsPrices[i] = vwsPrice;
         }
 
         double allShareIndex = Formulae.getGeometricMean(vwsPrices);
+        System.out.println();
+        System.out.printf("GBCE All Share Index :%.2f \n", allShareIndex);
 
-        System.out.println("GBCE All Share Index :" + allShareIndex);
 
+        // Repeat but using the TradeProcessor API
+
+        try
+        {
+            System.out.println();
+            System.out.println("Testing for queries on the trades, going through the TradeProcessor API.");
+            System.out.println();
+            for(int i = 0; i < stockCount; i++)
+            {
+                final Stock stock = stocks[i];
+                long examplePrice = stock.getParValue() * 2;
+                System.out.println("For stock " + stock.getName() + ":");
+                System.out.printf("Dividend yield :%.3G \n", 
+                        processor.calculateDividendYield(stock.getName(), examplePrice));
+                System.out.printf("P/E ratio :%.3G \n", processor.calculatePERatio(stock.getName(), examplePrice));
+
+                double vwsPrice = processor.getVolumeWeightedStockPrice(stock.getName());
+                System.out.printf("Volume Weighted Stock Price :%.2f \n", vwsPrice);
+            }
+        }
+        catch(SSSMException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        
         // through the processor API
         double allShareIndex2 = processor.getAllShareIndex();
-        System.out.println("GBCE All Share Index through API:" + allShareIndex2);
+
+        System.out.println();
+        System.out.printf("GBCE All Share Index through API:%.2f \n", allShareIndex2);
 
     }
 
